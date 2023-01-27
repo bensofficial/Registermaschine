@@ -31,22 +31,69 @@ public class Registermaschine {
         }
         String[] commandSubstrings = command.split(" ", 3);
         switch (commandSubstrings[0].toLowerCase()) {
-            case "load" -> load(getParameter(commandSubstrings));
-            case "dload" -> dload(getParameter(commandSubstrings));
-            case "store" -> store(getParameter(commandSubstrings));
-            case "add" -> add(getParameter(commandSubstrings));
-            case "end" -> end();
-            case "sub" -> sub(getParameter(commandSubstrings));
-            case "mult" -> mult(getParameter(commandSubstrings));
-            case "div" -> div(getParameter(commandSubstrings));
-            case "jump" -> jump(getParameter(commandSubstrings));
-            case "jgt" -> jgt(getParameter(commandSubstrings));
-            case "jge" -> jge(getParameter(commandSubstrings));
-            case "jlt" -> jlt(getParameter(commandSubstrings));
-            case "jle" -> jle(getParameter(commandSubstrings));
-            case "jeq" -> jeq(getParameter(commandSubstrings));
-            case "jne" -> jne(getParameter(commandSubstrings));
-            default -> throw new IllegalArgumentException("Illegaler Befehl.");
+            case "load": {
+                load(getParameter(commandSubstrings));
+                break;
+            }
+            case "dload": {
+                dload(getParameter(commandSubstrings));
+                break;
+            }
+            case "store": {
+                store(getParameter(commandSubstrings));
+                break;
+            }
+            case "add": {
+                add(getParameter(commandSubstrings));
+                break;
+            }
+            case "end": {
+                end();
+                break;
+            }
+            case "sub": {
+                sub(getParameter(commandSubstrings));
+                break;
+            }
+            case "mult": {
+                mult(getParameter(commandSubstrings));
+                break;
+            }
+            case "div": {
+                div(getParameter(commandSubstrings));
+                break;
+            }
+            case "jump": {
+                jump(getParameter(commandSubstrings));
+                break;
+            }
+            case "jgt": {
+                jgt(getParameter(commandSubstrings));
+                break;
+            }
+            case "jge": {
+                jge(getParameter(commandSubstrings));
+                break;
+            }
+            case "jlt": {
+                jlt(getParameter(commandSubstrings));
+                break;
+            }
+            case "jle": {
+                jle(getParameter(commandSubstrings));
+                break;
+            }
+            case "jeq": {
+                jeq(getParameter(commandSubstrings));
+                break;
+            }
+            case "jne": {
+                jne(getParameter(commandSubstrings));
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException("Illegaler Befehl.");
+            }
         }
     }
 
