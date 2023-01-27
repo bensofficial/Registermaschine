@@ -1,5 +1,5 @@
 # https://dzone.com/articles/build-package-and-run-spring-boot-apps-with-docker
-FROM maven:3.8.6-jdk-11-slim AS MAVEN_BUILD
+FROM maven:3.8.6-jdk-17-slim AS MAVEN_BUILD
 
 COPY pom.xml /build/
 COPY src /build/src/
@@ -7,7 +7,7 @@ COPY src /build/src/
 WORKDIR /build/
 RUN mvn package
 
-FROM openjdk:11-jre-slim-bullseye
+FROM openjdk:17-jre-slim-bullseye
 
 WORKDIR /app
 
