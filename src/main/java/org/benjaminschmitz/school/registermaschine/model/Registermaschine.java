@@ -25,7 +25,7 @@ public class Registermaschine {
         this.a = a;
         this.register = register;
         this.running = true;
-        this.bzIndex = new HashMap<String, Integer>();
+        this.bzIndex = new HashMap<>();
     }
 
     public void executeCommand(String command) {
@@ -40,6 +40,7 @@ public class Registermaschine {
                 load(getIntegerParameter(commandSubstrings));
                 break;
             }
+            case "loadi":
             case "dload": {
                 dload(getIntegerParameter(commandSubstrings));
                 break;
@@ -52,7 +53,12 @@ public class Registermaschine {
                 add(getIntegerParameter(commandSubstrings));
                 break;
             }
-            case "end": {
+            case "addi": {
+                addi(getIntegerParameter(commandSubstrings));
+                break;
+            }
+            case "end":
+            case "halt":{
                 end();
                 break;
             }
@@ -60,15 +66,29 @@ public class Registermaschine {
                 sub(getIntegerParameter(commandSubstrings));
                 break;
             }
-            case "mult": {
-                mult(getIntegerParameter(commandSubstrings));
+            case "subi": {
+                subi(getIntegerParameter(commandSubstrings));
+                break;
+            }
+            case "mult":
+            case "mul": {
+                mul(getIntegerParameter(commandSubstrings));
+                break;
+            }
+            case "muli": {
+                muli(getIntegerParameter(commandSubstrings));
                 break;
             }
             case "div": {
                 div(getIntegerParameter(commandSubstrings));
                 break;
             }
-            case "jump": {
+            case "divi": {
+                divi(getIntegerParameter(commandSubstrings));
+                break;
+            }
+            case "jump":
+            case "jmp": {
                 if (getParameter(commandSubstrings).matches("\\w+")) {
                     if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
                         throw new RuntimeException("Das angegebene Label existiert nicht.");
@@ -149,7 +169,7 @@ public class Registermaschine {
     public void buildIndex(String[] commands) {
         for (int i = 0; i < commands.length; i++) {
             String command = commands[i];
-            if(command.matches("\\w*:.*")) {
+            if(command.matches("[A-Za-z]+[A-Za-z0-9]*:.*")) {
                 String key = command.split(":")[0];
                 if(bzIndex.containsKey(key)) {
                     throw new RuntimeException("Doppeltes Label: " + key);
@@ -182,6 +202,11 @@ public class Registermaschine {
         bz++;
     }
 
+    private void addi(int value) {
+        a += value;
+        bz++;
+    }
+
     private void end() {
         bz++;
         running = false;
@@ -193,15 +218,30 @@ public class Registermaschine {
         bz++;
     }
 
-    private void mult(int registerId) {
+    private void subi(int value) {
+        a -= value;
+        bz++;
+    }
+
+    private void mul(int registerId) {
         checkRegisterId(registerId);
         a *= register[registerId];
+        bz++;
+    }
+
+    private void muli(int value) {
+        a *= value;
         bz++;
     }
 
     private void div(int registerId) {
         checkRegisterId(registerId);
         a /= register[registerId];
+        bz++;
+    }
+
+    private void divi(int value) {
+        a /= value;
         bz++;
     }
 
