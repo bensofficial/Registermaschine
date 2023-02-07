@@ -1,6 +1,8 @@
-package org.benjaminschmitz.school.registermaschine;
+package org.benjaminschmitz.school.registermaschine.model;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Registermaschine {
 
@@ -9,6 +11,7 @@ public class Registermaschine {
     private int bz;
     private int a;
     private boolean running;
+    private Map<String, Integer> bzIndex;
 
     public Registermaschine(int bz, int a) {
         this(bz, a, new int[16]);
@@ -22,29 +25,31 @@ public class Registermaschine {
         this.a = a;
         this.register = register;
         this.running = true;
+        this.bzIndex = new HashMap<String, Integer>();
     }
 
     public void executeCommand(String command) {
         if (!running) throw new RuntimeException("Die Registermaschine läuft nicht mehr.");
         if (command.isEmpty()) {
-            throw new RuntimeException("Kein Befehl angegeben.");
+            bz++;
+            return;
         }
         String[] commandSubstrings = command.split(" ", 3);
         switch (commandSubstrings[0].toLowerCase()) {
             case "load": {
-                load(getParameter(commandSubstrings));
+                load(getIntegerParameter(commandSubstrings));
                 break;
             }
             case "dload": {
-                dload(getParameter(commandSubstrings));
+                dload(getIntegerParameter(commandSubstrings));
                 break;
             }
             case "store": {
-                store(getParameter(commandSubstrings));
+                store(getIntegerParameter(commandSubstrings));
                 break;
             }
             case "add": {
-                add(getParameter(commandSubstrings));
+                add(getIntegerParameter(commandSubstrings));
                 break;
             }
             case "end": {
@@ -52,47 +57,104 @@ public class Registermaschine {
                 break;
             }
             case "sub": {
-                sub(getParameter(commandSubstrings));
+                sub(getIntegerParameter(commandSubstrings));
                 break;
             }
             case "mult": {
-                mult(getParameter(commandSubstrings));
+                mult(getIntegerParameter(commandSubstrings));
                 break;
             }
             case "div": {
-                div(getParameter(commandSubstrings));
+                div(getIntegerParameter(commandSubstrings));
                 break;
             }
             case "jump": {
-                jump(getParameter(commandSubstrings));
+                if (getParameter(commandSubstrings).matches("\\w+")) {
+                    if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
+                        throw new RuntimeException("Das angegebene Label existiert nicht.");
+                    }
+                    jump(bzIndex.get(getParameter(commandSubstrings)));
+                } else {
+                    jump(getIntegerParameter(commandSubstrings));
+                }
                 break;
             }
             case "jgt": {
-                jgt(getParameter(commandSubstrings));
-                break;
+                if (getParameter(commandSubstrings).matches("\\w+")) {
+                    if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
+                        throw new RuntimeException("Das angegebene Label existiert nicht.");
+                    }
+                    jgt(bzIndex.get(getParameter(commandSubstrings)));
+                } else {
+                    jgt(getIntegerParameter(commandSubstrings));
+                }
             }
             case "jge": {
-                jge(getParameter(commandSubstrings));
-                break;
+                if (getParameter(commandSubstrings).matches("\\w+")) {
+                    if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
+                        throw new RuntimeException("Das angegebene Label existiert nicht.");
+                    }
+                    jge(bzIndex.get(getParameter(commandSubstrings)));
+                } else {
+                    jge(getIntegerParameter(commandSubstrings));
+                }
             }
             case "jlt": {
-                jlt(getParameter(commandSubstrings));
-                break;
+                if (getParameter(commandSubstrings).matches("\\w+")) {
+                    if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
+                        throw new RuntimeException("Das angegebene Label existiert nicht.");
+                    }
+                    jlt(bzIndex.get(getParameter(commandSubstrings)));
+                } else {
+                    jlt(getIntegerParameter(commandSubstrings));
+                }
             }
             case "jle": {
-                jle(getParameter(commandSubstrings));
-                break;
+                if (getParameter(commandSubstrings).matches("\\w+")) {
+                    if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
+                        throw new RuntimeException("Das angegebene Label existiert nicht.");
+                    }
+                    jle(bzIndex.get(getParameter(commandSubstrings)));
+                } else {
+                    jle(getIntegerParameter(commandSubstrings));
+                }
             }
             case "jeq": {
-                jeq(getParameter(commandSubstrings));
-                break;
+                if (getParameter(commandSubstrings).matches("\\w+")) {
+                    if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
+                        throw new RuntimeException("Das angegebene Label existiert nicht.");
+                    }
+                    jeq(bzIndex.get(getParameter(commandSubstrings)));
+                } else {
+                    jeq(getIntegerParameter(commandSubstrings));
+                }
             }
             case "jne": {
-                jne(getParameter(commandSubstrings));
+                if (getParameter(commandSubstrings).matches("\\w+")) {
+                    if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
+                        throw new RuntimeException("Das angegebene Label existiert nicht.");
+                    }
+                    jne(bzIndex.get(getParameter(commandSubstrings)));
+                } else {
+                    jne(getIntegerParameter(commandSubstrings));
+                }
                 break;
             }
             default: {
                 throw new IllegalArgumentException("Illegaler Befehl.");
+            }
+        }
+    }
+
+    public void buildIndex(String[] commands) {
+        for (int i = 0; i < commands.length; i++) {
+            String command = commands[i];
+            if(command.matches("\\w*:.*")) {
+                String key = command.split(":")[0];
+                if(bzIndex.containsKey(key)) {
+                    throw new RuntimeException("Doppeltes Label: " + key);
+                }
+                bzIndex.put(key, i);
             }
         }
     }
@@ -195,13 +257,16 @@ public class Registermaschine {
         }
     }
 
-    private int getParameter(String[] commands) {
+    private String getParameter(String[] commands) {
         if (commands.length <= 1) {
             throw new RuntimeException("Fehlender Befehlparameter.");
         }
-        String command = commands[1];
+        return commands[1];
+    }
+
+    private int getIntegerParameter(String[] commands) {
         try {
-            return Integer.parseInt(command);
+            return Integer.parseInt(getParameter(commands));
         } catch (NumberFormatException e) {
             throw new RuntimeException("Der Parameter ist kein Zahlenwert.", e);
         }

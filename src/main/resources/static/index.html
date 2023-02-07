@@ -3,18 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Registermaschine</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-auto-columns: minmax(0, 1fr);
+            grid-auto-flow: column;
+            padding: 10px;
+        }
+        .grid-item {
+            border: 1px solid rgba(0, 0, 0, 0.8);
+        }
+        .textarea {
+            width: 100%;
+            height: calc(100% - 68px);
+            box-sizing: border-box;
+            resize: vertical;
+            overflow: auto;
+        }
+        .result {
+            font-family: 'Courier New', monospace;
+            font-size: 13.3333px;
+        }
+        </style>
+    </style>
 </head>
 <body>
-<form action="/execute" method="post">
-    <p>
-        <label for="commands">Befehle:</label>
-    </p>
-    <p>
-        <textarea cols="50" id="commands" name="commands" required rows="10"></textarea>
-    </p>
-    <p>
-        <input class="button" id="submit" name="submit" type="submit" value="Ausf&uuml;hren!">
-    </p>
-</form>
+<h1>Registermaschine</h1>
+
+<div class="grid-container">
+    <div class="grid-item">
+        <h2>Befehle</h2>
+        <textarea id="commands" class="textarea" name="commands" required oninput="execute()"></textarea>
+    </div>
+
+    <div class="grid-item">
+        <h2>Ergebnis</h2>
+        <p id="result" class="result">Gebe einen Befehl ein, damit der Code automatisch ausgeführt wird.</p>
+    </div>
+</div>
+<script>
+
+    function execute() {
+        fetch('/execute', {
+            method: 'POST',
+            body: JSON.stringify({commands: document.getElementById("commands").value}),
+            headers: { 'Content-Type': 'application/json' }
+            // body: 'commands=' + encodeURIComponent(document.getElementById("commands").value)
+        })
+            .then(function (response) {
+                return response.text();
+            }).then(function (html) {
+                document.getElementById("result").innerText = html
+        });
+    }
+</script>
 </body>
 </html>
