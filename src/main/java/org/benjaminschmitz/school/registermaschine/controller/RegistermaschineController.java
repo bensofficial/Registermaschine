@@ -15,7 +15,13 @@ public class RegistermaschineController {
         Registermaschine registermaschine = new Registermaschine(0, 0);
         StringBuilder resultContent = new StringBuilder();
 
-        registermaschine.buildIndex(commandsArray);
+        try {
+            registermaschine.buildIndex(commandsArray);
+        } catch (RuntimeException e) {
+            resultContent.append("Fehler: ").append(e.getMessage()).append(System.lineSeparator());
+            LOGGER.error("An error occurred while building the index.", e);
+            return resultContent.toString();
+        }
 
         unifyCommands(commandsArray);
 
