@@ -11,7 +11,7 @@ public class Registermaschine {
     private int bz;
     private int a;
     private boolean running;
-    private Map<String, Integer> bzIndex;
+    private final Map<String, Integer> bzIndex;
 
     public Registermaschine(int bz, int a) {
         this(bz, a, new int[16]);
