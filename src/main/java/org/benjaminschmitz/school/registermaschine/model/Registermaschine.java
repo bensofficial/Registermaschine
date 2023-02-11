@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Registermaschine {
+    
+    public static final String LABEL_REGEX = "[A-Za-z]+[A-Za-z0-9]*";
 
     private static final int REGISTER_SIZE = 16;
     private final int[] register;
@@ -89,7 +91,7 @@ public class Registermaschine {
             }
             case "jump":
             case "jmp": {
-                if (getParameter(commandSubstrings).matches("\\w+")) {
+                if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
                     if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
                         throw new RuntimeException("Das angegebene Label existiert nicht.");
                     }
@@ -100,7 +102,7 @@ public class Registermaschine {
                 break;
             }
             case "jgt": {
-                if (getParameter(commandSubstrings).matches("\\w+")) {
+                if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
                     if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
                         throw new RuntimeException("Das angegebene Label existiert nicht.");
                     }
@@ -110,7 +112,7 @@ public class Registermaschine {
                 }
             }
             case "jge": {
-                if (getParameter(commandSubstrings).matches("\\w+")) {
+                if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
                     if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
                         throw new RuntimeException("Das angegebene Label existiert nicht.");
                     }
@@ -120,7 +122,7 @@ public class Registermaschine {
                 }
             }
             case "jlt": {
-                if (getParameter(commandSubstrings).matches("\\w+")) {
+                if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
                     if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
                         throw new RuntimeException("Das angegebene Label existiert nicht.");
                     }
@@ -130,7 +132,7 @@ public class Registermaschine {
                 }
             }
             case "jle": {
-                if (getParameter(commandSubstrings).matches("\\w+")) {
+                if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
                     if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
                         throw new RuntimeException("Das angegebene Label existiert nicht.");
                     }
@@ -140,7 +142,7 @@ public class Registermaschine {
                 }
             }
             case "jeq": {
-                if (getParameter(commandSubstrings).matches("\\w+")) {
+                if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
                     if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
                         throw new RuntimeException("Das angegebene Label existiert nicht.");
                     }
@@ -150,7 +152,7 @@ public class Registermaschine {
                 }
             }
             case "jne": {
-                if (getParameter(commandSubstrings).matches("\\w+")) {
+                if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
                     if (!bzIndex.containsKey(getParameter(commandSubstrings))) {
                         throw new RuntimeException("Das angegebene Label existiert nicht.");
                     }
@@ -169,7 +171,7 @@ public class Registermaschine {
     public void buildIndex(String[] commands) {
         for (int i = 0; i < commands.length; i++) {
             String command = commands[i];
-            if(command.matches("[A-Za-z]+[A-Za-z0-9]*:.*")) {
+            if(command.matches( LABEL_REGEX+ ":.*")) {
                 String key = command.split(":")[0];
                 if(bzIndex.containsKey(key)) {
                     throw new RuntimeException("Doppeltes Label: " + key);

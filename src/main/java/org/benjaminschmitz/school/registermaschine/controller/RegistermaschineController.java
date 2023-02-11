@@ -47,7 +47,7 @@ public class RegistermaschineController {
     private String[] unifyCommands(String[] commands) {
         for (int i = 0; i < commands.length; i++) {
             String command = commands[i].trim();
-            if (command.matches("[A-Za-z]+[A-Za-z0-9]*:.*")) {
+            if (command.matches(Registermaschine.LABEL_REGEX + ":.*")) {
                 commands[i] = command.substring(command.indexOf(":") + 1);
                 command = commands[i].trim();
             }
