@@ -110,6 +110,7 @@ public class Registermaschine {
                 } else {
                     jgt(getIntegerParameter(commandSubstrings));
                 }
+                break;
             }
             case "jge": {
                 if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
@@ -120,6 +121,7 @@ public class Registermaschine {
                 } else {
                     jge(getIntegerParameter(commandSubstrings));
                 }
+                break;
             }
             case "jlt": {
                 if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
@@ -130,6 +132,7 @@ public class Registermaschine {
                 } else {
                     jlt(getIntegerParameter(commandSubstrings));
                 }
+                break;
             }
             case "jle": {
                 if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
@@ -140,6 +143,7 @@ public class Registermaschine {
                 } else {
                     jle(getIntegerParameter(commandSubstrings));
                 }
+                break;
             }
             case "jeq": {
                 if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
@@ -150,6 +154,7 @@ public class Registermaschine {
                 } else {
                     jeq(getIntegerParameter(commandSubstrings));
                 }
+                break;
             }
             case "jne": {
                 if (getParameter(commandSubstrings).matches(LABEL_REGEX)) {
